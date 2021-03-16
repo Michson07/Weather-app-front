@@ -5,11 +5,12 @@ const WeatherToday = (props) => {
     const day = new Date();
     const nextHours = props.weather ? props.weather.filter(d => props.checkDate(new Date(d.Date), day)).map((w) =>
     {
-        const hour = new Date(w.Date).getHours() === day.getUTCHours() + 2 ? 'Teraz' : new Date(w.Date).getHours();
+        const hour = new Date(w.Date).getHours() === day.getHours() ? 'Teraz' : new Date(w.Date).getHours();
+
         return(
             <td key={w.Date}>
-                <WeatherIcon weather = {w.Main}/> 
-                {w.Temp}&#8451;<br/> 
+                <WeatherIcon weather = {w.Main}/>
+                {w.Temp}&#8451;<br/>
                 {hour}
             </td>
         )
@@ -18,7 +19,7 @@ const WeatherToday = (props) => {
     return(
         <>
         {
-            nextHours ? 
+            nextHours ?
                 <div>
                     <table style={{marginRight:"auto", marginLeft:"auto"}}>
                         <tbody>
@@ -26,7 +27,7 @@ const WeatherToday = (props) => {
                                 {nextHours}
                             </tr>
                         </tbody>
-                    </table> 
+                    </table>
                     Temperatura minimalna: {props.weather[0].TempMin} &#8451;<br/>
                     Temperatura maksymalna: {props.weather[0].TempMax} &#8451;<br/>
                     Temperatura odczuwalna: {props.weather[0].FeelsLike} &#8451;<br/>
