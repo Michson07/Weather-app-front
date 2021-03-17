@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getWeather } from './helpers/getWeatherApi';
 
 const Search = (props) => {
-    const [location, setLocation] = useState(props.cities[0]);
+    const [location, setLocation] = useState(props.cities[0] ?? "");
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -14,12 +14,8 @@ const Search = (props) => {
             if(!location) {
                 return;
             }
-
-            const resp = await axios.get(`/api/forecast/${location}`);
-            const city = {
-                location: resp.data.City,
-                weather: resp.data.Weathers
-            };
+            const city = await getWeather(location);
+            
 
             if(city.location) {
                 if(isDefault) {

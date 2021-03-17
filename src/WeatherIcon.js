@@ -7,6 +7,7 @@ const WeatherIcon = (props) => {
         Clear: <allIcons.TiWeatherSunny/>,
         Clouds: <allIcons.TiWeatherCloudy/>,
         Rain: <allIcons.TiWeatherDownpour/>,
+        Snow: <allIcons.TiWeatherSnow/>,
         Thunderstorm: <allIcons.TiWeatherStormy/>,
         Drizzle: <allIcons.TiWeatherShower/>,
         Fog: <WiFog/>,

@@ -6,6 +6,7 @@ import {
 import WeatherNextDays from './WeatherNextDays';
 import WeatherToday from './WeatherToday';
 import {TiDelete} from 'react-icons/ti';
+import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 
 const Forecast = (props) => {
     function getHoursDifferenceBetweenDays(date1, date2) {
@@ -18,9 +19,15 @@ const Forecast = (props) => {
             date.getFullYear() === day.getFullYear()
     }
 
-    const onCityDeleteClick = (city) => {
+    const onCityDeleteClick = city => {
         props.setCities(props.cities.filter(w => w.location !== city));
     }
+
+    const checkWeatherDomination = city => {
+        const descriptionsArray = city.weather.map(w => w.Description);
+        return descriptionsArray.reduce((a, b, i, arr) =>
+            (arr.filter(v => v === a).length >= arr.filter(v => v === b).length ? a : b), null)
+    } 
 
     if(props.cities.length > 0) {
         let cities = props.cities.map(city => {
@@ -29,10 +36,17 @@ const Forecast = (props) => {
                 {
                     city.location ?
                     <Card style={{backgroundColor: 'lightcyan'}}>
-                        <button className="btn" style={{"width": "10%", "fontSize": "30px"}} onClick={() => onCityDeleteClick(city.location)}><TiDelete/></button>
+                        {
+                            props.showDelete ? 
+                            <button className="btn" style={{"width": "10%", "fontSize": "30px"}} onClick={() => onCityDeleteClick(city.location)}><TiDelete/></button>
+                            : null
+                        }
                         <CardBody>
                             <CardTitle style={{fontSize: '35px'}}>{city.location}</CardTitle>
                         </CardBody>
+                        <CardSubtitle>
+                            W dniu dzisiejszym przewaga: {checkWeatherDomination(city)}
+                        </CardSubtitle>
                         <CardBody>
                             <WeatherToday weather = {city.weather} checkDate = {checkDate}/>
                             <WeatherNextDays weather = {city.weather} checkDate = {checkDate}/>

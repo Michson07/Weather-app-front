@@ -21,7 +21,7 @@ export default function WeatherCardTab() {
         <div className="App">
             {cities.length > 0 || searched ? <><Search setSearched={setSearched} searched={searched} cities = {cities} setCities = {setCities}/><br/></> : null}
             <Container fluid>
-                <Forecast searched={searched} setSearched={setSearched} cities = {cities} setCities = {setCities}/>
+                <Forecast searched={searched} setSearched={setSearched} cities = {cities} setCities = {setCities} showDelete={true}/>
             </Container>
         </div>
       );
