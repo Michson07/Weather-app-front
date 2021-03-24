@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { Button, FormControl, InputGroup } from 'react-bootstrap';
 import { getWeather } from './helpers/getWeatherApi';
 
 const Search = (props) => {
-    const [location, setLocation] = useState(props.cities[0] ?? "");
+    const [location, setLocation] = useState(props.cities.length === 1 ? props.cities[0] : "");
     const [error, setError] = useState("");
 
     useEffect(() => {
-        getLocationWeather(true);
+        const citiesFromStorage = JSON.parse(sessionStorage.getItem("myCities"));
+        if(!citiesFromStorage) {
+            getLocationWeather(true);
+        }
     }, [])
 
     async function getLocationWeather(isDefault = false) {
@@ -15,21 +19,23 @@ const Search = (props) => {
                 return;
             }
             const city = await getWeather(location);
-            
 
             if(city.location) {
+                let notDuplicatedCities = [];
                 if(isDefault) {
-                    props.setCities([city]);
-                } else {
-                    const notDuplicatedCities = props.cities.filter(c => c.location !== city.location);
                     notDuplicatedCities.push(city);
-                    props.setCities(notDuplicatedCities);
+                } else {
+                    notDuplicatedCities = props.cities.filter(c => c.location !== city.location);
+                    notDuplicatedCities.push(city);
                 }
 
+                props.setCities(notDuplicatedCities);
+                sessionStorage.setItem("myCities", JSON.stringify(notDuplicatedCities));
                 props.setSearched(true);
                 setLocation("");
                 setError("");
             } else {
+                console.log('ss')
                 setError("Nie znaleziono miasta");
             }
         }
@@ -46,14 +52,20 @@ const Search = (props) => {
 
     return(
         <form onSubmit={eventHandler}>
-        <input
-            type="text"
-            value={props.searched ? location : ""}
-            onChange={event => setLocation(event.target.value)}
-            placeholder="Szukaj miasta"
-            required
-        />
-        <button>Szukaj</button><br/>
+            <div style={{width: 800, margin: 'auto', marginTop: 30}}>
+            <InputGroup className="mb-3">
+                <FormControl
+                    type="text"
+                    value={location}
+                    onChange={event => setLocation(event.target.value)}
+                    placeholder="Szukaj miasta"
+                    required
+                />
+                <InputGroup.Append>
+                    <Button variant="primary">Szukaj</Button>
+                </InputGroup.Append>
+            </InputGroup>
+            </div>
         {error}
         </form>
     )

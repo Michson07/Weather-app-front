@@ -16,6 +16,11 @@ export async function getCurrentLocation() {
 
 export async function getCurrentCity() {
     const z = await getCurrentLocation();
-    const resp = await axios.get(`/api/location`, { params: { x: z.x, y: z.y }});
+    const resp = await axios.get(`/api/location/city`, { params: { x: z.x, y: z.y }});
+    return resp.data;
+}
+
+export async function getCurrentGeoLocation(city) {
+    const resp = await axios.get(`/api/location/geolocation`, { params: { city: city }});
     return resp.data;
 }

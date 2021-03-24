@@ -10,11 +10,17 @@ export default function WeatherCardTab() {
 
     useEffect(() => {
         async function getCurrentLocation() {
-        const currentCity = await getCurrentCity()
-        setCities([currentCity]);
+            const currentCity = await getCurrentCity()
+            setCities([currentCity]);
         }
 
-        getCurrentLocation();
+        const citiesFromStorage = JSON.parse(sessionStorage.getItem("myCities"));
+        if(citiesFromStorage) {
+            setCities(citiesFromStorage)
+        } else {
+            getCurrentLocation();
+        }
+    
     }, [])
 
     return (

@@ -10,10 +10,17 @@ export default function MainWindow() {
             const citiesWithWeathersPromises = cities.map(async city => await getWeather(city))
             await Promise.all(citiesWithWeathersPromises).then(citiesWithWeathers => {
                 setCities(citiesWithWeathers);
+                sessionStorage.setItem("mainWindowCities", JSON.stringify(citiesWithWeathers));
             }); 
         }
 
-        getWeathers();
+        const citiesFromStorage = JSON.parse(sessionStorage.getItem("mainWindowCities"));
+        if(citiesFromStorage) {
+            setCities(citiesFromStorage)
+        } else {
+            getWeathers();
+        }
+        
     }, [])
 
     return(

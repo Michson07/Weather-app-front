@@ -3,14 +3,15 @@ import WeatherIcon from './WeatherIcon';
 
 const WeatherToday = (props) => {
     const day = new Date();
-    const nextHours = props.weather ? props.weather.filter(d => props.checkDate(new Date(d.Date), day)).map((w) =>
-    {
-        const hour = new Date(w.Date).getHours() === day.getHours() ? 'Teraz' : new Date(w.Date).getHours();
+
+    const nextHours = props.weather ? props.weather.filter(d => props.checkDate(new Date(d.Date), day)).map((w, index) => {
+        const checkedDate = new Date(w.Date);
+        const hour = index === 0 ? "Teraz" : checkedDate.getHours();
 
         return(
             <td key={w.Date}>
-                <WeatherIcon weather = {w.Main}/>
                 {w.Temp}&#8451;<br/>
+                <WeatherIcon weather = {w.Main}/><br/>
                 {hour}
             </td>
         )

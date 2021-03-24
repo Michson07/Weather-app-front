@@ -5,22 +5,30 @@ import {
   } from 'reactstrap';
 import WeatherNextDays from './WeatherNextDays';
 import WeatherToday from './WeatherToday';
-import {TiDelete} from 'react-icons/ti';
+import { TiDelete } from 'react-icons/ti';
 import CardSubtitle from 'reactstrap/lib/CardSubtitle';
+import { getImageForWeather } from './CardsBackgrounds/backgroundImage';
 
 const Forecast = (props) => {
     function getHoursDifferenceBetweenDays(date1, date2) {
         return (date1 - date2) / 36e5;
     }
 
-    const checkDate = (date, day) => {
-        return ((date.getDate() === day.getDate()) || (date.getDate() === new Date(day.getDate() + 1) && getHoursDifferenceBetweenDays(date, day) < 6)) &&
-            date.getMonth() === day.getMonth() &&
-            date.getFullYear() === day.getFullYear()
+    const checkDate = (date, today) => {
+        const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        return (date.getFullYear() === today.getFullYear() &&
+            date.getMonth() === today.getMonth() &&
+            date.getDate() === today.getDate()) || 
+            (date.getFullYear() === tomorrow.getFullYear() &&
+            date.getMonth() === tomorrow.getMonth() &&
+            date.getDate() === tomorrow.getDate() && 
+            date.getHours() - 12 <= tomorrow.getHours());
     }
 
     const onCityDeleteClick = city => {
-        props.setCities(props.cities.filter(w => w.location !== city));
+        const citiesWithoutDeleted = props.cities.filter(w => w.location !== city);
+        props.setCities(citiesWithoutDeleted);
+        sessionStorage.setItem("myCities", JSON.stringify(citiesWithoutDeleted));
     }
 
     const checkWeatherDomination = city => {
@@ -35,10 +43,11 @@ const Forecast = (props) => {
             <Col sm="3" key={city.location}>
                 {
                     city.location ?
-                    <Card style={{backgroundColor: 'lightcyan'}}>
+                    <Card style={{backgroundImage: `url(${getImageForWeather(city.weather[0].Main)})`, backgroundSize: 'cover',
+                        overflow: 'hidden', textAlign: "center", marginTop: 20, fontWeight: 'bold', height: 600}}>
                         {
                             props.showDelete ? 
-                            <button className="btn" style={{"width": "10%", "fontSize": "30px"}} onClick={() => onCityDeleteClick(city.location)}><TiDelete/></button>
+                            <button className="btn" style={{width: "10%", fontSize: 30}} onClick={() => onCityDeleteClick(city.location)}><TiDelete/></button>
                             : null
                         }
                         <CardBody>

@@ -7,3 +7,10 @@ export async function getWeather(location) {
         weather: resp.data.Weathers
     }
 }
+export async function getAirPolution(latitude, longitude, startDate, endDate) {
+    const resp = startDate && endDate ? 
+        await axios.get(`api/AirPolution?latitude=${latitude}&longitude=${longitude}&startDate=${startDate}&endDate=${endDate}`) :
+        await axios.get(`api/AirPolution?latitude=${latitude}&longitude=${longitude}`);
+
+    return resp.data;
+}
