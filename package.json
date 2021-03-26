@@ -17,6 +17,7 @@
     "react": "^16.14.0",
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-dialog": "^0.13.0",
+    "react-bootstrap-typeahead": "^5.1.4",
     "react-datepicker": "^3.6.0",
     "react-dom": "^16.14.0",
     "react-icons": "^3.11.0",

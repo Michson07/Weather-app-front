@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FormControl, InputGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { getWeather } from './helpers/getWeatherApi';
+import SearchLocationDialog from './WeatherCardsTab/SearchLocationDialog';
 
 const Search = (props) => {
-    const [location, setLocation] = useState(props.cities.length === 1 ? props.cities[0] : "");
+    const [location, setLocation] = useState(props.cities.length >= 1 ? props.cities[0] : "");
     const [error, setError] = useState("");
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         const citiesFromStorage = JSON.parse(sessionStorage.getItem("myCities"));
@@ -18,26 +20,30 @@ const Search = (props) => {
             if(!location) {
                 return;
             }
+
             const city = await getWeather(location);
 
-            if(city.location) {
-                let notDuplicatedCities = [];
-                if(isDefault) {
-                    notDuplicatedCities.push(city);
-                } else {
-                    notDuplicatedCities = props.cities.filter(c => c.location !== city.location);
-                    notDuplicatedCities.push(city);
+            if(isDefault || location != props.cities[0]) {
+                if(city.location) {
+                    let notDuplicatedCities = [];
+                    if(isDefault) {
+                        notDuplicatedCities.push(city);
+                    } else {
+                        notDuplicatedCities = props.cities.filter(c => c.location !== city.location);
+                        notDuplicatedCities.push(city);
+                    }
+    
+                    notDuplicatedCities = notDuplicatedCities.filter(c => c.location);
+                    props.setCities(notDuplicatedCities);
+                    sessionStorage.setItem("myCities", JSON.stringify(notDuplicatedCities));
+                    props.setSearched(!props.searched);
+                    setLocation("");
+                    setError("");
                 }
-
-                props.setCities(notDuplicatedCities);
-                sessionStorage.setItem("myCities", JSON.stringify(notDuplicatedCities));
-                props.setSearched(true);
-                setLocation("");
-                setError("");
-            } else {
-                console.log('ss')
-                setError("Nie znaleziono miasta");
-            }
+                else {
+                    setError("Nie znaleziono miasta");
+                }
+            } 
         }
         catch(e)
         {
@@ -45,29 +51,18 @@ const Search = (props) => {
         }
     }
 
-    const eventHandler = async (event) => {
-        event.preventDefault();
-        await getLocationWeather();
-    }
+    useEffect(() => {
+        getLocationWeather();
+    }, [location])
 
     return(
-        <form onSubmit={eventHandler}>
-            <div style={{width: 800, margin: 'auto', marginTop: 30}}>
-            <InputGroup className="mb-3">
-                <FormControl
-                    type="text"
-                    value={location}
-                    onChange={event => setLocation(event.target.value)}
-                    placeholder="Szukaj miasta"
-                    required
-                />
-                <InputGroup.Append>
-                    <Button variant="primary">Szukaj</Button>
-                </InputGroup.Append>
-            </InputGroup>
-            </div>
-        {error}
-        </form>
+        <div style={{marginLeft: '46%', marginTop: 30}}>
+                <Button onClick={setDialogOpen}>
+                    Szukaj miasta
+                </Button>
+                <br/><p style={{color: 'red'}}>{error}</p>
+            <SearchLocationDialog setDialogOpen={setDialogOpen} dialogOpen={dialogOpen} location={location} setLocation={setLocation}/>
+        </div>
     )
 }
 

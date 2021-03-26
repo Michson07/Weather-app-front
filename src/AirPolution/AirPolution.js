@@ -54,13 +54,12 @@ export default function AirPolution() {
     }
 
     return(
-        <>
-        <div style={{marginLeft: '45%', marginTop: 30, marginBottom: 30}}>
-            <Button onClick={setDialogOpen}>
-                Zmień parametry
-            </Button>
-        </div>
-            
+        <div style={{minHeight: 1000}}>
+            <div style={{marginLeft: '45%', marginTop: 30, marginBottom: 30}}>
+                <Button onClick={setDialogOpen}>
+                    Zmień parametry
+                </Button>
+            </div>
             <SettingsDialog 
                 setData={setData}
                 setMainData={setMainData}
@@ -99,6 +98,9 @@ export default function AirPolution() {
                                     <Bar 
                                         data={data} 
                                     />
+                                    <Doughnut
+                                        data={mainData} 
+                                    />
                                 </>
                             }
                             
@@ -106,7 +108,6 @@ export default function AirPolution() {
                     </>
                 }
             </div>
-            
-        </>
+        </div>
     )
 }

@@ -4,7 +4,7 @@ import WeatherIcon from './WeatherIcon';
 const WeatherNextDays = (props) => {
     const day = new Date();
     let days = [];
-    var weekday = new Array(7);
+    let weekday = new Array(7);
     weekday[0] = "Niedziela";
     weekday[1] = "Poniedziałek";
     weekday[2] = "Wtorek";
@@ -21,7 +21,7 @@ const WeatherNextDays = (props) => {
         {
             let TempMax = Math.max.apply(Math, weathers.map((o) => o.TempMax ));
             let TempMin = Math.min.apply(Math, weathers.map((o) => o.TempMin ));
-            let Main = weathers[3].Main;
+            let Main = weathers[3]?.Main;
             let Day = new Date(weathers[0].Date);
 
             days.push(

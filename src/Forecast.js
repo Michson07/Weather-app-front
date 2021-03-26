@@ -10,10 +10,6 @@ import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import { getImageForWeather } from './CardsBackgrounds/backgroundImage';
 
 const Forecast = (props) => {
-    function getHoursDifferenceBetweenDays(date1, date2) {
-        return (date1 - date2) / 36e5;
-    }
-
     const checkDate = (date, today) => {
         const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
         return (date.getFullYear() === today.getFullYear() &&
@@ -46,7 +42,7 @@ const Forecast = (props) => {
                     <Card style={{backgroundImage: `url(${getImageForWeather(city.weather[0].Main)})`, backgroundSize: 'cover',
                         overflow: 'hidden', textAlign: "center", marginTop: 20, fontWeight: 'bold', height: 600}}>
                         {
-                            props.showDelete ? 
+                            props.showDelete && props.cities.length > 1 ? 
                             <button className="btn" style={{width: "10%", fontSize: 30}} onClick={() => onCityDeleteClick(city.location)}><TiDelete/></button>
                             : null
                         }
