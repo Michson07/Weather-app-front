@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WeatherCardTab from './WeatherCardsTab/WeatherCardTab';
-import { Nav, Button, Form, Navbar, FormControl } from 'react-bootstrap';
+import { Nav, Button, Form, Navbar } from 'react-bootstrap';
 import MainWindow from './MainWindow/MainWindow';
 import AirPolution from './AirPolution/AirPolution';
 import ChangeBackgroundDialog from './ChangeBackgroundDialog/ChangeBackgroundDialog';
+import Pdf from "./Pomoc.pdf";
 
 function App() {
   const [choice, setChoice] = useState("white");
@@ -27,6 +28,9 @@ function App() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link onClick={() => setTab("airPolution")} disabled={tab === "airPolution"}>Stan powietrza</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href={Pdf} target="_blank" style={{color: "rgba(0,0,0,.5)"}}>Pomoc</Nav.Link>
           </Nav.Item>
         </Nav>
         <Form inline>
