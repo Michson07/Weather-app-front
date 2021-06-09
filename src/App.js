@@ -18,19 +18,19 @@ function App() {
       <Navbar bg={choice === "black" ? "dark" : "light"} variant="light">
         <Nav className="mr-auto">
           <Nav.Item>
-            <Nav.Link onClick={() => setTab("")} disabled={tab === ""}><img width="30" height="30" src="sunicon.webp"/></Nav.Link>
+            <Nav.Link style={{ color: choice === "black" ? "white" : "none" }} onClick={() => setTab("")} disabled={tab === ""}><img width="30" height="30" src="sunicon.webp"/></Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link onClick={() => setTab("")} disabled={tab === ""}>Strona Glowna</Nav.Link>
+            <Nav.Link style={{ color: choice === "black" ? "white" : "none" }} onClick={() => setTab("")} disabled={tab === ""}>Strona Glowna</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link onClick={() => setTab("cards")} disabled={tab === "cards"}>Moje pogody</Nav.Link>
+            <Nav.Link style={{ color: choice === "black" ? "white" : "none" }} onClick={() => setTab("cards")} disabled={tab === "cards"}>Moje pogody</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link onClick={() => setTab("airPolution")} disabled={tab === "airPolution"}>Stan powietrza</Nav.Link>
+            <Nav.Link style={{ color: choice === "black" ? "white" : "none" }} onClick={() => setTab("airPolution")} disabled={tab === "airPolution"}>Stan powietrza</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href={Pdf} target="_blank" style={{color: "rgba(0,0,0,.5)"}}>Pomoc</Nav.Link>
+            <Nav.Link style={{ color: choice === "black" ? "white" : "none" }} href={Pdf} target="_blank" style={{color: "rgba(0,0,0,.5)"}}>Pomoc</Nav.Link>
           </Nav.Item>
         </Nav>
         <Form inline>

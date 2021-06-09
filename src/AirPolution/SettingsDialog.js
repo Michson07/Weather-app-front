@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { getCurrentGeoLocation } from '../helpers/getCurrentLocation';
 import { getAirPolution } from '../helpers/getWeatherApi';
@@ -8,8 +8,40 @@ export default function SettingsDialog(props) {
     const[searchedCity, setSearchedCity] = useState("");
     const[startDate, setStartDate] = useState(undefined);
     const[endDate, setEndDate] = useState(undefined);
+    const[error, setError] = useState("");
+
+    useEffect(() => {
+        setError("");
+    }, [searchedCity, startDate, endDate])
 
     async function changeData() {
+        const today = new Date();
+
+        if(searchedCity === "") {
+            setError("Pole miasto nie może być puste");
+            return;
+        }
+
+        if(!new Date(startDate) || !new Date(endDate)) {
+            setError("Proszę wpisać obie daty");
+            return;
+        }
+
+        if(new Date(startDate) > new Date(endDate)) {
+            setError("Data początkowa nie może być nowsza od daty zakończenia");
+            return;
+        }
+
+        if(new Date(startDate) > today) {
+            setError("Data początkowa nie może być nowsza od dzisiejszej daty");
+            return;
+        }
+
+        if(new Date(endDate) > today) {
+            setError("Data zakończenia nie może być nowsza od dzisiejszej daty");
+            return;
+        }
+
         const geoLocation = await getCurrentGeoLocation(searchedCity);
         const startDateAsDate = new Date(startDate);
         const endDateAsDate = new Date(endDate);
@@ -65,7 +97,15 @@ export default function SettingsDialog(props) {
                         onChange={event => setEndDate(event.target.value)}
                     />
                 </Form.Group>
-                <Button onClick={ async event => { event.preventDefault(); await changeData(); }}>Szukaj</Button>
+                <Form.Group>
+                    <Form.Label style={{color: "red"}}>{error}</Form.Label>
+                </Form.Group>
+                <Button 
+                    onClick={ async event => { event.preventDefault(); await changeData(); }}
+                    disabled={error}
+                >
+                        Szukaj
+                    </Button>
             </Form>
         </Modal.Body>
       </Modal>

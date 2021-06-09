@@ -16,6 +16,7 @@ export async function getCurrentLocation() {
 
 export async function getCurrentCity() {
     const z = await getCurrentLocation();
+    console.log(z.x)
     const resp = await axios.get(`/api/location/city`, { params: { x: z.x, y: z.y }});
     return resp.data;
 }
